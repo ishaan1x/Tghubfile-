@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Download Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1a1a1a;
+            padding: 15px 0;
+            border-bottom: 2px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff5722;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #333;
+            color: #ff5722;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff5722;
+            font-size: 28px;
+        }
+        
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .post-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .post-thumbnail {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .post-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .post-card:hover .post-thumbnail img {
+            transform: scale(1.05);
+        }
+        
+        .quality-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff5722;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .post-content {
+            padding: 20px;
+        }
+        
+        .post-title {
+            color: #ff9800;
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .post-details {
+            font-size: 14px;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            display: block;
+            background-color: #ff5722;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #e64a19;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #1a1a1a;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 2px solid #333;
+        }
+        
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: #ff5722;
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            padding: 0 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-box button:hover {
+            background-color: #e64a19;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-title {
+                height: auto;
+            }
+            
+            .post-details {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">ANIME DOWNLOAD PORTAL</div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> HOME</a></li>
+                    <li><a href="#"><i class="fas fa-film"></i> MOVIES</a></li>
+                    <li><a href="#"><i class="fas fa-tv"></i> CARTOON SHOWS</a></li>
+                    <li><a href="#"><i class="fas fa-dragon"></i> ANIME</a></li>
+                    <li><a href="#"><i class="fas fa-broadcast-tower"></i> TV SHOWS</a></li>
+                    <li><a href="#"><i class="fas fa-list"></i> CHANNELS LIST</a></li>
+                    <li><a href="#"><i class="fas fa-satellite-dish"></i> OTT NETWORKS</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i> FIRST ON NET</a></li>
+                    <li><a href="#"><i class="fas fa-crown"></i> EXCLUSIVE SHOWS</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> CONTACT US</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <div class="container">
+            <h1 class="page-title">Latest Anime Releases</h1>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Search for anime...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            
+            <div class="posts-grid">
+                <!-- Post 1 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/1a1a2e/ffffff?text=Kamen+Rider" alt="Tojima Wants to Be a Kamen Rider">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Tojima Wants to Be a Kamen Rider Season 1 Multi Audio [Hindi-Tamil-Telugu-Eng-Jap]</h2>
+                        <div class="post-details">480p, 720p & 1080p HD WEB-DL | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 2 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/16213e/ffffff?text=Wild+Last+Boss" alt="A Wild Last Boss Appeared!">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">A Wild Last Boss Appeared! Season 1 Multi Audio [Hindi-Tamil-Telugu-Jap]</h2>
+                        <div class="post-details">480p, 720p & 1080p HD WEB-DL | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 3 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/0f3460/ffffff?text=Gamma+1/2" alt="Gamma 1/2">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Gamma 1/2 (2024) Season 2 Multi Audio [Hindi-English-Japanese]</h2>
+                        <div class="post-details">480p, 720p & 1080p HD WEB-DL | 10bit HEVC MSub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 4 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/533483/ffffff?text=Reborn+to+Master" alt="Reborn to Master the Blade">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Reborn to Master the Blade: From Hero-King to Extraordinary Squire Season 1</h2>
+                        <div class="post-details">BluRay [Hindi-Japanese] Dual Audio 480p, 720p & 1080p HD | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 5 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/1f4068/ffffff?text=Grieving+Soul" alt="Let This Grieving Soul Retire!">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Let This Grieving Soul Retire! Season 2 Dual Audio [Hindi-Japanese]</h2>
+                        <div class="post-details">480p, 720p & 1080p HD WEB-DL | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 6 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/e43f5a/ffffff?text=Naruto+Shippuden" alt="Naruto: Shippuden">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Naruto: Shippuden Season 14 Episodes BluRay [Hindi-Tamil-Tel-Mal-Ben-Eng-Jap] Multi Audio</h2>
+                        <div class="post-details">DD2.0 480p, 720p & 1080p HD | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 7 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/1b1b2f/ffffff?text=Hunter+x+Hunter" alt="Hunter × Hunter">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Hunter × Hunter (2011) Season 5 BluRay [Hindi-Eng-Jap] Multi Audio</h2>
+                        <div class="post-details">DD2.0 480p, 720p & 1080p HD | 10bit HEVC ESub (Muse Dub)</div>
+                        <div class="post-meta">
+                            <span>October 23, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+                
+                <!-- Post 8 -->
+                <div class="post-card">
+                    <div class="post-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/1f4068/ffffff?text=One+Final+Thing" alt="May I Ask for One Final Thing?">
+                        <span class="quality-badge">1080p</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">May I Ask for One Final Thing? Season 1 Multi Audio [Hindi-English-Japanese]</h2>
+                        <div class="post-details">480p, 720p & 1080p HD WEB-DL | 10bit HEVC ESub</div>
+                        <div class="post-meta">
+                            <span>October 24, 2025</span>
+                            <span>Tom World</span>
+                        </div>
+                        <a href="#" class="download-btn">Download Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">DINCA</a>
+                <a href="#">TOONWORLD-SALE</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">DMCA</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Anime Download Portal. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple JavaScript for interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event to download buttons
+            const downloadButtons = document.querySelectorAll('.download-btn');
+            
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const postTitle = this.closest('.post-card').querySelector('.post-title').textContent;
+                    alert(`Download would start for: "${postTitle}"`);
+                });
+            });
+            
+            // Add hover effect to navigation items
+            const navItems = document.querySelectorAll('nav ul li a');
+            
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-box input');
+            const searchButton = document.querySelector('.search-box button');
+            
+            searchButton.addEventListener('click', function() {
+                performSearch();
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    alert(`Searching for: "${searchTerm}"`);
+                    // In a real implementation, you would filter the posts here
+                }
+            }
+        });
+    </script>
+</body>
+</html>
